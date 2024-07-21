@@ -2,3 +2,5 @@
 Logs/*.log
 **/*.backup
 **/FSTimeGet*
+**/Assembly-CSharp.*
+Library/Bee/backend1.traceevents

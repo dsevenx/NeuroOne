@@ -51,5 +51,6 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "NeuroOne.sln"
+    "dotnet.defaultSolution": "NeuroOne.sln",
+    "git.ignoreLimitWarning": true
 }

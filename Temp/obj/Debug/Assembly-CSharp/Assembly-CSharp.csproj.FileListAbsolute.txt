@@ -1,0 +1,9 @@
+/Users/steffenrokosch/NeuroOne/Temp/bin/Debug/Assembly-CSharp.deps.json
+/Users/steffenrokosch/NeuroOne/Temp/bin/Debug/Assembly-CSharp.dll
+/Users/steffenrokosch/NeuroOne/Temp/bin/Debug/Assembly-CSharp.pdb
+/Users/steffenrokosch/NeuroOne/Temp/obj/Debug/Assembly-CSharp/Assembly-CSharp.csproj.AssemblyReference.cache
+/Users/steffenrokosch/NeuroOne/Temp/obj/Debug/Assembly-CSharp/Assembly-CSharp.GeneratedMSBuildEditorConfig.editorconfig
+/Users/steffenrokosch/NeuroOne/Temp/obj/Debug/Assembly-CSharp/Assembly-CSharp.csproj.CoreCompileInputs.cache
+/Users/steffenrokosch/NeuroOne/Temp/obj/Debug/Assembly-CSharp/Assembly-CSharp.sourcelink.json
+/Users/steffenrokosch/NeuroOne/Temp/obj/Debug/Assembly-CSharp/Assembly-CSharp.dll
+/Users/steffenrokosch/NeuroOne/Temp/obj/Debug/Assembly-CSharp/Assembly-CSharp.pdb

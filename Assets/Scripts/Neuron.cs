@@ -44,13 +44,13 @@ public class Neuron : NeuronBase
         return pValue;
     }
 
-    private void ErmittelOutput()
+    internal void ErmittelOutput()
     {
         mSumme = ErmittelSumme();
         mOutput = ErmittelReLU(mSumme);
     }
 
-    internal void ermittelNeueWeightsAndBias(float pLernrate)
+    internal void ErmittelNeueWeightsAndBias(float pLernrate)
     {
         foreach (var lNeuronWeight in mWeightsZuInput)
         {

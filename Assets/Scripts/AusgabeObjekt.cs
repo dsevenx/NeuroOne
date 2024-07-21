@@ -28,6 +28,7 @@ public class AusgabeObjekt : NeuronBase
         }
 
         mTextMeshProName.text = "Y" + mNummer;
+        ErmittelOutput();
     }
 
     void Update()
@@ -37,7 +38,7 @@ public class AusgabeObjekt : NeuronBase
         mTextMeshProWeights.text = string.Format("{0:F2}", LieferWeights());
         mTextMeshProSollWert.text = string.Format("{0:F1}", mSollOutput);
     }
-    private void ErmittelOutput()
+    internal void ErmittelOutput()
     {
         mSumme = ErmittelSumme();
         mOutput = mSumme;

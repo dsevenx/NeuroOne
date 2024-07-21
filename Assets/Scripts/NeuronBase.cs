@@ -41,7 +41,7 @@ public class NeuronBase : MonoBehaviour
 
     foreach (var lWeight in mWeightsZuInput)
     {
-      lStringBuilder.AppendLine("w" + lWeight.Key.mNummer + "=" + string.Format("{0:F2}", lWeight.Value));
+      lStringBuilder.AppendLine("w" + lWeight.Key.mNummer + "=" + string.Format("{0:F2}", lWeight.Value.mWeight));
     }
 
     return lStringBuilder.ToString();

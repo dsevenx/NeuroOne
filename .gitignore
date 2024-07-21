@@ -4,3 +4,4 @@ Logs/*.log
 **/FSTimeGet*
 **/Assembly-CSharp.*
 Library/Bee/backend1.traceevents
+Library/Bee/artifacts/200b0aEDbg.dag/Assembly-CSharp.dll

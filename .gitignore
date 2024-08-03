@@ -8,3 +8,7 @@ Library/*
 Library/**
 Library/
 Temp/__Backupscenes/0.backup
+*.log
+*.cache
+Logs/AssetImportWorker0.log
+Logs/

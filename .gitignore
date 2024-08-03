@@ -12,3 +12,4 @@ Temp/__Backupscenes/0.backup
 *.cache
 Logs/AssetImportWorker0.log
 Logs/
+Temp/

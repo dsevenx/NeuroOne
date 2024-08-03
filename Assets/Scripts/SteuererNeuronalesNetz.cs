@@ -177,7 +177,8 @@ public class SteuererNeuronalesNetz : MonoBehaviour
 
         VorwaertsPropogation();
 
-        BackPropagation(lLernrate);
+        float lSummeLostFunction = BackPropagation(lLernrate);
+        mLostFunctionextMeshPro.text = string.Format("{0:F1}", lSummeLostFunction);;
     }
 
     private void EineVarianteSetzen()
@@ -206,7 +207,7 @@ public class SteuererNeuronalesNetz : MonoBehaviour
 
         foreach (var lOutputNeuron in mOutputElemente)
         {
-            lErg = lErg + lOutputNeuron.Value.ErmittelNeueWeightsAndBias(lLernrate);
+            lErg += lOutputNeuron.Value.ErmittelNeueWeightsAndBias(lLernrate);
         }
 
         foreach (var lNeuron in mHiddenElemente)

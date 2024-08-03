@@ -12,10 +12,13 @@ public class EingabeObjekt : NeuronBase
 
     public float mInputwert;
 
-    public void Init(int pNummer, float pStartwert) {
+    public void Init(int pNummer) {
         Initialisiere(pNummer,0f);
-        mInputwert = pStartwert;
         mTextMeshProName.text = "X" + mNummer;
+    }
+
+     public void Change( float pStartwert) {
+        mInputwert = pStartwert;
     }
 
     void Update()

@@ -22,9 +22,10 @@ public class AusgabeObjekt : NeuronBase
     {
         Initialisiere(pNummer, pBiasStart);
 
-        foreach (var lInpurneuron in mHiddenElemente)
+        foreach (var lNeuron in mHiddenElemente)
         {
-            mWeightsZuInput.Add(lInpurneuron.Value, new Weight(pWeightStart));
+            mWeightsZuInput.Add(lNeuron.Value, new Weight(pWeightStart));
+            lNeuron.Value.mOutputNeuronen.Add(this);
         }
 
         mTextMeshProName.text = "Y" + mNummer;
@@ -44,11 +45,11 @@ public class AusgabeObjekt : NeuronBase
         mOutput = mSumme;
     }
 
-    internal void SetSollWert(float pSoll)
+    internal void Change(float pSoll)
     {
         mSollOutput = pSoll;
     }
-    internal void ErmittelNeueWeightsAndBias(float pLernrate)
+    internal float ErmittelNeueWeightsAndBias(float pLernrate)
     {
         mDiffMal2MalLernRate = pLernrate * 2 * (LieferOutput() - mSollOutput);
 
@@ -58,6 +59,8 @@ public class AusgabeObjekt : NeuronBase
         {
             lWeight.Value.setWeight(lWeight.Value.mWeight - mDiffMal2MalLernRate * lWeight.Key.LieferOutput());
         }
+
+        return (LieferOutput() - mSollOutput) * (LieferOutput() - mSollOutput);
     }
 
     public override float LieferCostFunctionAbleitung_DiffMal2MalLernRate()

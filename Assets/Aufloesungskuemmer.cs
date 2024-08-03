@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -69,5 +70,15 @@ public class Aufloesungskuemmer : MonoBehaviour
         int lAnzahlMitPlatzhalterElement = pAnzahl + 2;
         float lHoeheInsgesamt = 2 * mHalfHeight;
         lHoeheProElement = lHoeheInsgesamt / lAnzahlMitPlatzhalterElement;
+    }
+
+    internal Vector2 lieferPosCubeFuerPhase()
+    {
+       return new Vector2(mHalfWidth * (-1) + mHalfWidth / 12,  mHalfHeight * (-1) + mHalfHeight/8 );
+    }
+
+    internal Vector2 lieferPosCubeFuerLostFunction()
+    {
+       return new Vector2(mHalfWidth - mHalfWidth / 12,  mHalfHeight * (-1) + mHalfHeight/8 );
     }
 }

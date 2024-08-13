@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using TMPro;
+using Unity.VisualScripting.Dependencies.Sqlite;
 
 public class SteuererNeuronalesNetz : MonoBehaviour
 {
@@ -36,9 +37,15 @@ public class SteuererNeuronalesNetz : MonoBehaviour
     public int mSchritt;
 
     public int mGeklickt;
+    public int mLastGeklickt;
 
     public float[] mInput;
 
+    private float mMyTimer = 0.0f;
+
+    public float mLernrate;
+
+    public float mBestSummeLostFunction = 0.0f;
 
     void Start()
     {
@@ -54,7 +61,7 @@ public class SteuererNeuronalesNetz : MonoBehaviour
         mInput = new float[mAnzahlInputElemente];
 
         mCubeFuerPhase.position = new Vector3(mAufloesungskuemmer.lieferPosCubeFuerPhase().x, mAufloesungskuemmer.lieferPosCubeFuerPhase().y, 10);
-        mCubeFuerPhaseTextMeshPro.text = "idle";   
+        mCubeFuerPhaseTextMeshPro.text = "idle";
         mCubeFuerLostFunction.position = new Vector3(mAufloesungskuemmer.lieferPosCubeFuerLostFunction().x, mAufloesungskuemmer.lieferPosCubeFuerLostFunction().y, 10);
         mLostFunctionextMeshPro.text = "nichts";
         erstelleXElemente();
@@ -92,12 +99,12 @@ public class SteuererNeuronalesNetz : MonoBehaviour
             GameObject lGameObject = Instantiate(mPrefabOfHiddenElement, parentTransformHidden);
             Neuron lNeuron = lGameObject.GetComponent<Neuron>();
             mHiddenElemente.Add(i, lNeuron);
-            lNeuron.Init(i, ErmittelStartWeight(i,2.5f), ErmittelStartWeight(i, 0.01f), mInputElemente);
+            lNeuron.Init(i, ErmittelStartBias(i, 2.5f), ErmittelStartWeight(i, 0.01f), mInputElemente);
             lNeuron.GetComponent<Transform>().position = new Vector3(lPositionen[i].x, lPositionen[i].y, 10);
         }
     }
 
-    
+
 
     private void erstelleYElemente()
     {
@@ -109,20 +116,20 @@ public class SteuererNeuronalesNetz : MonoBehaviour
             GameObject lGameObject = Instantiate(mPrefabOfOutputElement, parentTransformOutput);
             AusgabeObjekt lAusgabeObjekt = lGameObject.GetComponent<AusgabeObjekt>();
             mOutputElemente.Add(i, lAusgabeObjekt);
-            lAusgabeObjekt.Init(i, ErmittelStartWeight(i,1.5f), ErmittelStartWeight(i,0.02f), mHiddenElemente);
+            lAusgabeObjekt.Init(i, ErmittelStartBias(i, 1.5f), ErmittelStartWeight(i, 0.02f), mHiddenElemente);
             lAusgabeObjekt.GetComponent<Transform>().position = new Vector3(lPositionen[i].x, lPositionen[i].y, 10);
             lAusgabeObjekt.Change(99.9f + 10 * i);
         }
     }
 
-    private static float ErmittelStartWeight(int i,float pStart)
+    private static float ErmittelStartWeight(int i, float pStart)
     {
-        return i * 0.02f + 0.7f+ pStart;
+        return i * 0.02f + 0.7f + pStart;
     }
 
-    private static float ErmittelStartBias(int i,float pStart)
+    private static float ErmittelStartBias(int i, float pStart)
     {
-        return 6.75f + i * .5f;
+        return -2 + i * .2f;
     }
 
     void Update()
@@ -144,41 +151,74 @@ public class SteuererNeuronalesNetz : MonoBehaviour
                     // Debug.Log("Treffer:" + lName);
                 }
             }
-
-            if (mGeklickt >= 2)
-            {
-                mSchritt = mGeklickt - 1;
-                SetzemSchrittZurueck();
-
-                mCubeFuerPhaseTextMeshPro.text ="Set-"+mSchritt;
-                
-                EineVarianteSetzen();
-            }
-
-            VorwaertsPropogation();
         }
 
         if (mGeklickt == 1)
         {
             mCubeFuerPhaseTextMeshPro.text = "lerne";
-            Anlernen();
+
+            float lSummeLostFunction = Anlernen();
+
+            mMyTimer += Time.deltaTime;
+
+            if (mMyTimer > 0.5f)
+            {
+                mLostFunctionextMeshPro.text = string.Format("{0:F1}", lSummeLostFunction);
+                mMyTimer = 0;
+            }
+
+            if (mBestSummeLostFunction * 1.52f < lSummeLostFunction)
+            {
+                mGeklickt++;
+            }
+            else if (lSummeLostFunction < mBestSummeLostFunction)
+            {
+                mBestSummeLostFunction = lSummeLostFunction;
+            }
         }
+        if (mGeklickt >= 2 && mLastGeklickt != mGeklickt)
+        {
+            mLastGeklickt = mGeklickt;
+
+            mSchritt++;
+            SetzemSchrittZurueck();
+
+            mCubeFuerPhaseTextMeshPro.text = "Set-" + mSchritt;
+
+            EineVarianteSetzen();
+
+            VorwaertsPropogation();
+        }
+
     }
 
-    private void Anlernen()
+    private float Anlernen()
     {
-        float lLernrate = 0.00000002f;
+        float lErgSummeLostFunction = 0;
 
-        // Lernmaterial einbilden
-        mSchritt++;
+        for (int i = 1; i <= mZuLernendesMaterial.Count; i++)
+        {
+            mSchritt = i;
+
+            EineVarianteSetzen();
+
+            for (int lWelle = 1; lWelle <= 10; lWelle++)
+            {
+                 VorwaertsPropogation();
+
+                 lErgSummeLostFunction += BackPropagation(mLernrate);
+            }
+          
+            /*
+            VorwaertsPropogation();
+
+            lErgSummeLostFunction += BackPropagation(mLernrate);
+            */
+        }
+
         SetzemSchrittZurueck();
-      
-        EineVarianteSetzen();
 
-        VorwaertsPropogation();
-
-        float lSummeLostFunction = BackPropagation(lLernrate);
-        mLostFunctionextMeshPro.text = string.Format("{0:F1}", lSummeLostFunction);;
+        return lErgSummeLostFunction;
     }
 
     private void EineVarianteSetzen()

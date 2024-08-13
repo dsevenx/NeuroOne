@@ -26,14 +26,6 @@ public class NeuronBase : MonoBehaviour
     mWeightsZuInput = new Dictionary<NeuronBase, Weight>();
     mOutputNeuronen = new List<NeuronBase>();
   }
-  public void ergaenzeOutputNeuron(NeuronBase pNeuronBase)
-  {
-    mOutputNeuronen.Add(pNeuronBase);
-  }
-  public void ergaenzeInputNeuron(NeuronBase pNeuronBase, float pWeightstart)
-  {
-    mWeightsZuInput.Add(pNeuronBase, new Weight(pWeightstart));
-  }
 
   public string LieferWeights()
   {
